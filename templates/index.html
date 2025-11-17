@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salary Predictor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 450px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+        h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+        }
+        button {
+            padding: 12px;
+            width: 100%;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        .prediction {
+            margin-top: 20px;
+            background: #eef2ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            color: #1e1b4b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Salary Predictor</h2>
+
+        <form action="/predict" method="post">
+
+            <!-- Experience Level (updated mapping) -->
+            <label for="experience_level_encoded">Experience Level</label>
+            <select id="experience_level_encoded" name="experience_level_encoded" required>
+                <option value="" disabled selected>Select experience level</option>
+                <option value="0">Entry</option>
+                <option value="1">Mid</option>
+                <option value="2">Senior</option>
+                <option value="3">Executive</option>
+            </select>
+
+            <!-- Company Size (updated mapping) -->
+            <label for="company_size_encoded">Company Size</label>
+            <select id="company_size_encoded" name="company_size_encoded" required>
+                <option value="" disabled selected>Select company size</option>
+                <option value="0">Small</option>
+                <option value="1">Medium</option>
+                <option value="2">Large</option>
+            </select>
+
+            <!-- Employment Type -->
+            <label for="employment_type_PT">Employment Type</label>
+            <select id="employment_type_PT" name="employment_type_PT" required>
+                <option value="" disabled selected>Select employment type</option>
+                <option value="0">Full-time</option>
+                <option value="1">Part-time</option>
+            </select>
+
+            <!-- Job Title — Single dropdown UI -->
+            <label for="job_title_select">Job Title</label>
+            <select id="job_title_select" name="job_title_select" required>
+                <option value="" disabled selected>Select job title</option>
+                <option value="data_scientist">Data Scientist</option>
+                <option value="data_engineer">Data Engineer</option>
+                <option value="ml_engineer">Machine Learning Engineer</option>
+                <option value="data_analyst">Data Analyst</option>
+            </select>
+
+            <!-- Hidden inputs (actual backend-required fields) -->
+            <input type="hidden" name="job_title_Data_Engineer" id="job_title_Data_Engineer" value="0">
+            <input type="hidden" name="job_title_Data_Scientist" id="job_title_Data_Scientist" value="0">
+            <input type="hidden" name="job_title_Machine_Learning_Engineer" id="job_title_Machine_Learning_Engineer" value="0">
+
+            <button type="submit">Predict Salary</button>
+        </form>
+
+        {% if prediction %}
+        <div class="prediction">
+            Predicted Salary : ${{ "{:,.2f}".format(prediction) }}
+        </div>
+        {% endif %}
+        <p style="text-align:center; font-size:12px; font-style:italic; color:#6b7280; margin-top:10px;">
+            Created by Ananya Gupta
+        </p>
+    </div>
+
+    <!-- Mapping script for job title dropdown -->
+    <script>
+        (function(){
+            const select = document.getElementById('job_title_select');
+
+            const map = {
+                'data_engineer':  { de: '1', ds: '0', ml: '0', dm: '0' },
+                'data_scientist': { de: '0', ds: '1', ml: '0', dm: '0' },
+                'ml_engineer':    { de: '0', ds: '0', ml: '1', dm: '0' },
+                'data_analyst':   { de: '0', ds: '0', ml: '0', dm: '0' } // default
+            };
+
+            function applyRole(role){
+                const m = map[role] || map['data_analyst'];
+                document.getElementById('job_title_Data_Engineer').value = m.de;
+                document.getElementById('job_title_Data_Scientist').value = m.ds;
+                document.getElementById('job_title_Machine_Learning_Engineer').value = m.ml;
+            }
+
+            select.addEventListener('change', () => applyRole(select.value));
+
+            const form = select.closest('form');
+            form.addEventListener('submit', () => {
+                applyRole(select.value || 'data_analyst');
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
