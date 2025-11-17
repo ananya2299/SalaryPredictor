@@ -7,19 +7,12 @@ This app predicts salary based on experience level, company size, job role, and 
 https://huggingface.co/spaces/ananya2299/SalaryPredictor
 
 ✨ Features
-
-📈 Predict salary using a trained Linear Regression model
-
-🖥️ Clean and simple UI (HTML + CSS)
-
-⚡ FastAPI backend for fast inference
-
-🐍 Python + scikit-learn model served via .sav file
-
-🌐 Fully deployed on Hugging Face Spaces
-
-🧠 Model
-
+1. Predict salary using a trained Linear Regression model
+2. Clean and simple UI (HTML + CSS)
+3. FastAPI backend for fast inference
+4. Python + scikit-learn model served via .sav file
+5. Fully deployed on Hugging Face Spaces
+6. Model
 The app uses a Linear Regression model trained on encoded input features:
 
 -Experience Level
@@ -32,13 +25,13 @@ Model file included:
 lin_regress.sav
 
 🏗️ Project Structure
-├── main.py               # FastAPI backend
-├── index.html            # Frontend UI
-├── requirements.txt      # Python dependencies
-├── Dockerfile            # Container setup for HF Space
-├── space.yaml            # Hugging Face Space configuration
-├── lin_regress.sav       # ML model
-└── .gitignore
+- main.py               # FastAPI backend
+- index.html            # Frontend UI
+- requirements.txt      # Python dependencies
+- Dockerfile            # Container setup for HF Space
+- space.yaml            # Hugging Face Space configuration
+- lin_regress.sav       # ML model
+- .gitignore
 
 ⚙️ Installation (Local Development)
 
@@ -66,5 +59,6 @@ Run: docker run -p 7860:7860 salary-predictor
 This project is fully configured for HuggingFace deployment using:
 - Dockerfile
 - space.yaml
+
 
 Just upload the repo to HuggingFace or connect with GitHub and it deploys automatically.
